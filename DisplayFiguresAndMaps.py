@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication , QMainWindow, QWidget, QLabel, QGridLayout
+from StatisticsFromGitHub import GitHubCharts
 
 class LanguagesView(QWidget):
     """Window settings where user can select a language to view its graph"""
@@ -94,7 +95,43 @@ class MainWindow(QMainWindow):
         """Go to window where user can select which language statistics wants to see"""
         self.nowy2 = LanguagesView()
         self.setCentralWidget(self.nowy2)
+        self.nowy2.button_1.clicked.connect(self.clicked_python)
+        self.nowy2.button_2.clicked.connect(self.clicked_c)
+        self.nowy2.button_3.clicked.connect(self.clicked_cpp)
+        self.nowy2.button_4.clicked.connect(self.clicked_c_sharp)
+        self.nowy2.button_5.clicked.connect(self.clicked_java)
+        self.nowy2.button_6.clicked.connect(self.clicked_java_script)
+        self.nowy2.button_7.clicked.connect(self.clicked_php)
+        self.nowy2.button_8.clicked.connect(self.clicked_sql)
+        self.nowy2.button_9.clicked.connect(self.clicked_back)
         self.show()
+
+    def clicked_python(self):
+        python_chart = GitHubCharts('python')
+
+    def clicked_c(self):
+        c_chart = GitHubCharts('c')
+
+    def clicked_cpp(self):
+        cpp_chart = GitHubCharts('cpp')
+
+    def clicked_c_sharp(self):
+        c_sharp_chart = GitHubCharts('c#')
+
+    def clicked_java(self):
+        java_chart = GitHubCharts('java')
+
+    def clicked_java_script(self):
+        java_script_chart = GitHubCharts('javascript')
+
+    def clicked_php(self):
+        php_chart = GitHubCharts('php')
+
+    def clicked_sql(self):
+        sql_chart = GitHubCharts('sql')
+
+    def clicked_back(self):
+        self.startUI()
 
 if __name__ == '__main__':
     """Start the application"""

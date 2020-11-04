@@ -8,16 +8,28 @@ class GitHubCharts():
         """Reading datas from URL and initialize variables"""
         #Creating variables
         self.repo_links, self.stars, self.labels = [], [], []
-        self.my_language = language
+        self.language = language
         #Page details and read datas
-        URL = f"https://api.github.com/search/repositories?q=language:{language}&sort=star"
+        URL = f"https://api.github.com/search/repositories?q=language:{self.language}&sort=star"
         headers = {'Accept': 'application/vnd.github.v3+json'}
         r = requests.get(URL, headers=headers)
         response_dict = r.json()
 
         response_dicts = response_dict['items']
 
+        self.my_language_settings()
         self.write_datas(response_dicts)
+
+    def my_language_settings(self):
+        """Subtitle settings for Bar graph title"""
+        if self.language == 'cpp':
+            self.language = 'C++'
+        elif self.language == 'javascript':
+            self.language = 'JavaScript'
+        elif self.language == 'php' or self.language == 'sql':
+            self.language = self.language.upper()
+        else:
+            self.language = self.language.title()
 
     def write_datas(self, response_dicts):
         """Write datas from page to variables"""
@@ -46,8 +58,9 @@ class GitHubCharts():
         },
         }]
 
+
         my_layout = {'title': {
-                    'text': f"{self.my_language.title()} projects with the highest number of stars on GitHub.\n"
+                    'text': f"{self.language} projects with the highest number of stars on GitHub.\n"
                             f" You can press on project name to go to the project page",
                     'font': {
                         'family': 'Times New Roman',
@@ -73,4 +86,5 @@ class GitHubCharts():
     def draw(self, data, my_layout):
         """Drawing Bar graph"""
         fig = {'data': data, "layout": my_layout}
-        offline.plot(fig, filename=f"data/{self.my_language.lower()}_GitHub.html")
+        offline.plot(fig, filename=f"data/{self.language.lower()}_GitHub.html")
+
