@@ -2,26 +2,25 @@ import requests
 from plotly import offline
 
 class GitHubCharts():
-    """Class is responsible for drawing a Bar graph with datas about languages from GitHub"""
+    """Class is responsible for drawing a Bar graph with data about languages from GitHub"""
 
     def __init__(self, language):
-        """Reading datas from URL and initialize variables"""
+        """Reading data from URL and initialize variables"""
         #Creating variables
         self.repo_links, self.stars, self.labels = [], [], []
         self.language = language
-        #Page details and read datas
+        #Page details and read data
         URL = f"https://api.github.com/search/repositories?q=language:{self.language}&sort=star"
         headers = {'Accept': 'application/vnd.github.v3+json'}
         r = requests.get(URL, headers=headers)
         response_dict = r.json()
-
         response_dicts = response_dict['items']
 
         self.my_language_settings()
-        self.write_datas(response_dicts)
+        self.write_data(response_dicts)
 
     def my_language_settings(self):
-        """Subtitle settings for Bar graph title"""
+        """Title settings for Bar graph title"""
         if self.language == 'cpp':
             self.language = 'C++'
         elif self.language == 'javascript':
@@ -31,8 +30,8 @@ class GitHubCharts():
         else:
             self.language = self.language.title()
 
-    def write_datas(self, response_dicts):
-        """Write datas from page to variables"""
+    def write_data(self, response_dicts):
+        """Write data from page to variables"""
         for repo_dict in response_dicts:
             repo_name = repo_dict['name']
             repo_url = repo_dict['html_url']
