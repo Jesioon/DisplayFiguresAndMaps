@@ -3,13 +3,12 @@ from plotly import offline
 
 class EarthQuakes():
     """Display Earthquakes on the map with data from website"""
-    def __init__(self):
+    def __init__(self, identificator):
         """Reading data from URL and initialize variables"""
         # Creating variables
         self.sizes, self.mags, self.longitudes, self.latitudes, self.titles = [], [], [], [], []
-
         # Page details and read data
-        URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+        URL = f"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/{identificator}.geojson"
         r = requests.get(URL)
         self.response = r.json()
         rediable_file = 'data/summary_all_day_earthquakes.json'
@@ -24,14 +23,19 @@ class EarthQuakes():
     def attribution_variables(self):
         """Attribution values for variables"""
         for feature in self.features:
-            self.mags.append(feature['properties']['mag'])
-            self.longitudes.append(feature['geometry']['coordinates'][0])
-            self.latitudes.append(feature['geometry']['coordinates'][1])
-            self.titles.append(feature['properties']['title'])
+            if (feature['properties']['mag'] == None or feature['geometry']['coordinates'][0] == None or
+                feature['geometry']['coordinates'][1] == None or feature['properties']['title'] == None):
+                continue
+            else:
+                self.mags.append(feature['properties']['mag'])
+                self.longitudes.append(feature['geometry']['coordinates'][0])
+                self.latitudes.append(feature['geometry']['coordinates'][1])
+                self.titles.append(feature['properties']['title'])
+
             if feature['properties']['mag'] >= 0:
                 self.sizes.append(5*feature['properties']['mag'])
             else:
-                self.sizes.append(1)
+                self.sizes.append(0.1)
 
     def map_settings(self):
         """Map settings"""
